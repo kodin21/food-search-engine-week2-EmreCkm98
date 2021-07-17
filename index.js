@@ -1,4 +1,4 @@
-let getModal = document.getElementById("jsModal");
+
 let tabIndex = 1;
 let getM = document.getElementById("jsMain");
 let favMeals = [];
