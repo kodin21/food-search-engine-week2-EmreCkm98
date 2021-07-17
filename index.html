@@ -4,10 +4,41 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/v4-shims.css">
     <title>Document</title>
 </head>
 <body>
-    KODUNUZU BURAYA YAZABILIRSINIZ
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class=" col-lg-6 col-md-8">
+                <div class="card p-3">
+                    <div class="row justify-content-center">
+                        <div class="col-12">
+                            <h2 class="heading text-center">Yemek Arama Motoru</h2>
+                            <h5 id="jsUser" class="heading text-center"></h5>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-12">
+                        <input id="jsSearch" type="search" placeholder="Aranacak yemeği giriniz" style="height: 50px;width: 100%;">
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div id="jsMeal" class="col-12">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
     <script src="index.js"></script>
 </body>
 </html>
