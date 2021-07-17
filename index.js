@@ -26,6 +26,106 @@ function getUserName() {
       userNameHeader.innerText = `Merhaba, ${userName}`;
     });
 }
+//yemek kartını oluşturma
+function createMealCard(meal,getMealDiv)
+{
+  meal.forEach((element)=>{
+    //yemek adı ve favori butonunu tutan div
+    const newMealDiv = document.createElement("div");
+    //div id
+    const attributeId = document.createAttribute("id");
+    attributeId.value = `jsCardId${element.id}`;
+    const attributeTabIndex = document.createAttribute("tabIndex");
+    attributeTabIndex.value = tabIndex;
+    newMealDiv.setAttributeNode(attributeTabIndex);
+    //div style
+    newMealDiv.style =
+      "border-style: solid;margin-top:10px; display: flex;flex-direction: row;flex-wrap: nowrap;justify-content: space-between;";
+    //yemek adı tutan div
+    const title = document.createElement("div");
+
+    title.innerHTML = element.title;
+    //favori butonu tutan div
+    const button = document.createElement("div");
+
+    const icon = document.createElement("i");
+    const attributeClass = document.createAttribute("class");
+    const attributeIdIcon = document.createAttribute("id");
+    attributeClass.value = "far fa-heart";
+    attributeIdIcon.value = `jsIcon${element.id}`;
+    icon.setAttributeNode(attributeClass);
+    icon.setAttributeNode(attributeIdIcon);
+
+    button.appendChild(icon);
+
+    handleClickFav(button,attributeClass,element.title);
+
+        newMealDiv.appendChild(title);
+        newMealDiv.appendChild(button);
+
+          handleFocus(newMealDiv);
+        
+          handleKeyUpFav(newMealDiv,attributeClass,element.title);
+          getMealDiv.appendChild(newMealDiv);
+          tabIndex++;
+  });
+}
+ // yemek cartına tıklanınca focus olma,olmama
+function handleFocus(mealCard)
+{
+  mealCard.addEventListener("click", function () {
+    mealCard.focus();
+    mealCard.style =
+      "outline:2px solid red;margin-top:10px; display: flex;flex-direction: row;flex-wrap: nowrap;justify-content: space-between;";
+  });
+  mealCard.addEventListener("focusout", function () {
+    mealCard.style =
+      "border-style: solid;margin-top:10px; display: flex;flex-direction: row;flex-wrap: nowrap;justify-content: space-between;";
+  });
+};
+//favori butonuna tıklanınca favoriye ekleme,silme;localstoragea ekleme
+function handleClickFav(favButton,favIcon,meal)
+{
+        //favori butonuna tıklanınca favoriye ekleme,silme;localstoragea ekleme
+        favButton.addEventListener("click", () => {
+          if (favIcon.value == "far fa-heart") {
+            favIcon.value = "fas fa-heart";
+            favMeals.push(meal);
+            localStorage.setItem("meals", JSON.stringify(favMeals));
+          } else {
+            favIcon.value = "far fa-heart";
+            const index = favMeals.indexOf(meal);
+            if (index > -1) {
+              favMeals.splice(index, 1);
+              localStorage.setItem("meals", JSON.stringify(favMeals));
+            }
+          }
+        });
+}
+// f tusuna basınca favori ekleme,çıkarma;localstorage ekleme
+function handleKeyUpFav(favButton,favIcon,meal)
+{
+     // f tusuna basınca favori ekleme,çıkarma;localstorage ekleme
+     favButton.addEventListener("keyup", (event) => {
+      let clickedKey = event.key;
+      if (clickedKey === "f") {
+        if (favIcon.value == "far fa-heart") {
+          favIcon.value = "fas fa-heart";
+          favMeals.push(meal);
+          localStorage.setItem("meals", JSON.stringify(favMeals));
+          
+        } else {
+          favIcon.value = "far fa-heart";
+          const index = favMeals.indexOf(meal);
+          if (index > -1) {
+            favMeals.splice(index, 1);
+            localStorage.setItem("meals", JSON.stringify(favMeals));
+          }
+        }
+      }
+    });
+}
+
 //yemekleri getir
 function getMeal() {
   fetch("https://jsonplaceholder.typicode.com/todos")
@@ -33,87 +133,7 @@ function getMeal() {
     .then((json) => {
       let id = 1;
       let getMealDiv = document.getElementById("jsMeal");
-      json.forEach((element) => {
-        //yemek adı ve favori butonunu tutan div
-        const newMealDiv = document.createElement("div");
-        //div id
-        const attributeId = document.createAttribute("id");
-        attributeId.value = `jsCardId${id}`;
-        const attributeTabIndex = document.createAttribute("tabIndex");
-        attributeTabIndex.value = tabIndex;
-        newMealDiv.setAttributeNode(attributeTabIndex);
-        //div style
-        newMealDiv.style =
-          "border-style: solid;margin-top:10px; display: flex;flex-direction: row;flex-wrap: nowrap;justify-content: space-between;";
-        //yemek adı tutan div
-        const title = document.createElement("div");
-
-        title.innerHTML = element.title;
-        //favori butonu tutan div
-        const button = document.createElement("div");
-
-        const icon = document.createElement("i");
-        const attributeClass = document.createAttribute("class");
-        const attributeIdIcon = document.createAttribute("id");
-        attributeClass.value = "far fa-heart";
-        attributeIdIcon.value = `jsIcon${id}`;
-        icon.setAttributeNode(attributeClass);
-        icon.setAttributeNode(attributeIdIcon);
-
-        button.appendChild(icon);
-
-        //favori butonuna tıklanınca favoriye ekleme,silme;localstoragea ekleme
-        button.addEventListener("click", () => {
-          if (attributeClass.value == "far fa-heart") {
-            attributeClass.value = "fas fa-heart";
-            favMeals.push(element.title);
-            localStorage.setItem("meals", JSON.stringify(favMeals));
-          } else {
-            attributeClass.value = "far fa-heart";
-            const index = favMeals.indexOf(element.title);
-            if (index > -1) {
-              favMeals.splice(index, 1);
-            }
-          }
-        });
-
-        newMealDiv.appendChild(title);
-        newMealDiv.appendChild(button);
-
-        // yemek cartına tıklanınca focus olma
-        newMealDiv.addEventListener("click", function () {
-          newMealDiv.focus();
-          newMealDiv.style =
-            "outline:2px solid red;margin-top:10px; display: flex;flex-direction: row;flex-wrap: nowrap;justify-content: space-between;";
-        });
-        newMealDiv.addEventListener("focusout", function () {
-          newMealDiv.style =
-            "border-style: solid;margin-top:10px; display: flex;flex-direction: row;flex-wrap: nowrap;justify-content: space-between;";
-        });
-        // f tusuna basınca favori ekleme,çıkarma;localstorage ekleme
-        newMealDiv.addEventListener("keyup", (event) => {
-          let clickedKey = event.key;
-          if (clickedKey === "f") {
-            if (attributeClass.value == "far fa-heart") {
-              attributeClass.value = "fas fa-heart";
-              favMeals.push(element.title);
-              localStorage.setItem("meals", JSON.stringify(favMeals));
-              console.log(favMeals);
-            } else {
-              attributeClass.value = "far fa-heart";
-              const index = favMeals.indexOf(element.title);
-              if (index > -1) {
-                favMeals.splice(index, 1);
-              }
-            }
-          }
-        });
-
-        getMealDiv.appendChild(newMealDiv);
-
-        id++;
-        tabIndex++;
-      });
+      createMealCard(json,getMealDiv);
     });
 }
 
@@ -151,81 +171,5 @@ function SearchMeal() {
 function GetSearchedMeals(meals) {
   let id = 1;
   let getMealDiv = document.getElementById("jsMeal");
-  meals.forEach((element) => {
-    const newMealDiv = document.createElement("div");
-    //div id
-    const attributeId = document.createAttribute("id");
-    attributeId.value = id;
-    newMealDiv.setAttributeNode(attributeId);
-    const attributeTabIndex = document.createAttribute("tabIndex");
-    attributeTabIndex.value = tabIndex;
-    newMealDiv.setAttributeNode(attributeTabIndex);
-    //div style
-    newMealDiv.style =
-      "border-style: solid;margin-top:10px; display: flex;flex-direction: row;flex-wrap: nowrap;justify-content: space-between;";
-    //div inside
-    const title = document.createElement("div");
-
-    title.innerHTML = element.title;
-    const button = document.createElement("div");
-
-    const icon = document.createElement("i");
-    const attributeClass = document.createAttribute("class");
-    const attributeIdIcon = document.createAttribute("id");
-    attributeClass.value = "far fa-heart";
-    attributeIdIcon.value = `jsIcon${id}`;
-    icon.setAttributeNode(attributeClass);
-    icon.setAttributeNode(attributeIdIcon);
-
-    button.appendChild(icon);
-
-    button.addEventListener("click", () => {
-      if (attributeClass.value == "far fa-heart") {
-        attributeClass.value = "fas fa-heart";
-        favMeals.push(element.title);
-        localStorage.setItem("meals", JSON.stringify(favMeals));
-      } else {
-        attributeClass.value = "far fa-heart";
-        const index = favMeals.indexOf(element.title);
-        if (index > -1) {
-          favMeals.splice(index, 1);
-        }
-      }
-    });
-
-    newMealDiv.appendChild(title);
-    newMealDiv.appendChild(button);
-
-    //  //favori butonuna tıklanınca favoriye ekleme,silme;localstoragea ekleme
-    newMealDiv.addEventListener("click", function () {
-      newMealDiv.focus();
-      newMealDiv.style =
-        "outline:2px solid red;margin-top:10px; display: flex;flex-direction: row;flex-wrap: nowrap;justify-content: space-between;";
-    });
-    newMealDiv.addEventListener("focusout", function () {
-      newMealDiv.style =
-        "border-style: solid;margin-top:10px; display: flex;flex-direction: row;flex-wrap: nowrap;justify-content: space-between;";
-    });
-    // f tusuna basınca favori ekleme,çıkarma;localstorage ekleme
-    newMealDiv.addEventListener("keyup", (event) => {
-      let clickedKey = event.key;
-      if (clickedKey === "f") {
-        if (attributeClass.value == "far fa-heart") {
-          attributeClass.value = "fas fa-heart";
-          favMeals.push(element.title);
-          localStorage.setItem("meals", JSON.stringify(favMeals));
-        } else {
-          attributeClass.value = "far fa-heart";
-          const index = favMeals.indexOf(element.title);
-          if (index > -1) {
-            favMeals.splice(index, 1);
-          }
-        }
-      }
-    });
-
-    getMealDiv.appendChild(newMealDiv);
-    id++;
-    tabIndex++;
-  });
+  createMealCard(meals,getMealDiv);
 }
